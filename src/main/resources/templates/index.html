@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voting System</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Floating Alerts -->
+<div class="alert-container">
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show shadow" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show shadow" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+</div>
+
+<!-- Main Container -->
+<div class="main-container d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar bg-dark text-white p-3">
+        <h2>🎵 Music Awards</h2>
+        <a class="d-block text-white mt-3" th:href="@{/winners}">Winners</a>
+        <a class="d-block text-white" th:href="@{/about}">About</a>
+        <a class="d-block text-white" th:href="@{/pastwinners}">Past Winners</a>
+        <button class="btn btn-outline-light mt-3" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area flex-grow-1" style="margin-left:250px;">
+        <!-- Carousel -->
+        <div id="eventCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active"><img th:src="@{/images/taylor3.jpg}" class="d-block w-100" alt=""></div>
+                <div class="carousel-item"><img th:src="@{/images/coldplay.jpg}" class="d-block w-100" alt=""></div>
+                <div class="carousel-item"><img th:src="@{/images/bruno.jpeg}" class="d-block w-100" alt=""></div>
+                <div class="carousel-item"><img th:src="@{/images/gaga.jpg}" class="d-block w-100" alt=""></div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#eventCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#eventCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <!-- Event Title -->
+        <div class="event-title text-center text-white fw-bold"
+             style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:60px;">
+            <span th:text="${eventName}">Music Awards</span>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center py-3 border-top bg-light">
+            <h5>🎵 Music Awards</h5>
+            <p class="text-muted mb-0">Copyright 2025. All rights reserved.</p>
+        </footer>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h4 class="modal-title">Log in</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/login}" method="post">
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Log In</button>
+                </form>
+                <div class="text-center mt-3">
+                    Don’t have an account?
+                    <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#registerModal">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h4 class="modal-title">Sign Up</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/register}" method="post" th:object="${user}">
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" th:field="*{name}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" th:field="*{email}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="password" th:field="*{password}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Age</label>
+                        <input type="number" th:field="*{age}" class="form-control" min="10" max="100" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Gender</label>
+                        <select th:field="*{gender}" class="form-select" required>
+                            <option value="">-- Select Gender --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Country</label>
+                        <select th:field="*{country}" class="form-select" required>
+                            <option value="">-- Select Country --</option>
+                            <option value="Sri Lanka">Sri Lanka</option>
+                            <option value="India">India</option>
+                            <option value="USA">USA</option>
+                            <option value="UK">UK</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
